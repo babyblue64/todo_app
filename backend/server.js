@@ -4,10 +4,11 @@ const cors = require('cors');
 const fs = require('fs').promises;
 
 const app = express();
-const PORT = 5500;
+const PORT = process.env.PORT || 5500;
 const DATA_FILE = path.join(__dirname, 'todos.json');
 
 app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 async function initializeDataFile() {
@@ -81,7 +82,7 @@ app.delete('/todos/:id', async (req, res) => {
 
 (async () => {
     await initializeDataFile();
-    app.listen(process.env.PORT || PORT, () => {
+    app.listen(PORT, () => {
         console.log(`server running at port ${process.env.PORT || PORT}`);
     });
 })();
